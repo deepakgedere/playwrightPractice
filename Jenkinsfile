@@ -5,30 +5,11 @@ pipeline {
         nodejs "node18"
     }
 
-    environment {
-        // Caches for faster builds (safe on Windows)
-        NPM_CONFIG_CACHE = "${WORKSPACE}\\.npm"
-        PLAYWRIGHT_BROWSERS_PATH = "${WORKSPACE}\\.cache\\pw-browsers"
-        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "0"
-        // Where Playwright HTML report is generated (default is 'playwright-report')
-        PW_REPORT_DIR = "playwright-report"
-    }
-
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/deepakgedere/playwrightPractice.git'
-            }
-        }
-
-        stage('Prepare Workspace & Cache') {
-            steps {
-                bat """
-                if not exist "%NPM_CONFIG_CACHE%" mkdir "%NPM_CONFIG_CACHE%"
-                if not exist "%PLAYWRIGHT_BROWSERS_PATH%" mkdir "%PLAYWRIGHT_BROWSERS_PATH%"
-                if not exist "%TEST_RESULTS_DIR%" mkdir "%TEST_RESULTS_DIR%"
-                """
             }
         }
 
