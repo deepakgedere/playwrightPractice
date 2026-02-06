@@ -24,16 +24,17 @@ pipeline {
 
         stage('Run Playwright Tests') {
             steps {
-                bat 'npx playwright test --reporter=line'
+                bat 'npx playwright test --reporter=line,html'
             }
         }
 
+        
         stage('Archive Report') {
             steps {
-                // Forward slashes are fine for Ant-style patterns on Windows too
-                archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true
+                archiveArtifacts artifacts: 'playwright-report/**/*.*', fingerprint: true, onlyIfSuccessful: false
             }
         }
+
     }
 
     post {
