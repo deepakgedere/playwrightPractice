@@ -15,19 +15,22 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
-                sh 'npx playwright install --with-deps'
+                // Use bat for Windows; tools{} puts Node on PATH
+                bat 'npm install'
+                // On Windows, do NOT use --with-deps
+                bat 'npx playwright install'
             }
         }
 
         stage('Run Playwright Tests') {
             steps {
-                sh 'npx playwright test --reporter=line'
+                bat 'npx playwright test --reporter=line'
             }
         }
 
         stage('Archive Report') {
             steps {
+                // Forward slashes are fine for Ant-style patterns on Windows too
                 archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true
             }
         }
